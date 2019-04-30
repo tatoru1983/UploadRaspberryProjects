@@ -32,16 +32,20 @@ public class RunnerZipAndUploadProject {
 		String fileName = args[1].concat(".zip");
 
 		String accessToken = props.getProperty("Token");
+		DbxClientV2 client = DropboxUtility.getClient(accessToken);
 		
 		//step 1: creo lo zip
 		ZipUtility.zipFolder(folder, fileName);
 		
-		//step 2: carico su DropBox
-		DbxClientV2 client = DropboxUtility.getClient(accessToken);
+		//step 2: cancello il file se presente
+		DropboxUtility.deleteFile(client, fileName);
+		
+		//step 3: carico su DropBox
 		InputStream in = new FileInputStream(fileName);
 		DropboxUtility.uploadFile(client, in, fileName);
+		in.close();
 		
-		//step 3: cancello lo zip locale
+		//step 4: cancello lo zip locale
 		new File(fileName).delete();
 	}
 

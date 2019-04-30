@@ -19,4 +19,8 @@ public class DropboxUtility {
 	public static void uploadFile(DbxClientV2 client, InputStream in, String path) throws UploadErrorException, DbxException, IOException {
 		client.files().uploadBuilder("/".concat(path)).uploadAndFinish(in);
 	}
+	
+	public static void deleteFile(DbxClientV2 client, String path) throws UploadErrorException, DbxException, IOException {
+		client.files().deleteV2("/".concat(path));
+	}
 }
